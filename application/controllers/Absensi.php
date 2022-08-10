@@ -50,4 +50,9 @@ class Absensi extends CI_Controller {
         redirect(base_url().'absensi/setAbsensi');
     }
 
+    public function test()
+    {
+        echo "coba";
+    }
+
 }
