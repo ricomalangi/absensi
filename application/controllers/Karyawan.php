@@ -88,4 +88,9 @@ class Karyawan extends CI_Controller {
 
         redirect(base_url()."karyawan");
     }
+
+    public function test1()
+    {
+        echo "coba";
+    }
 }
