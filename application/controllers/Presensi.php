@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require('./application/third_party/phpoffice/vendor/autoload.php');
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 class Presensi extends CI_Controller {
 
     function __construct()
@@ -108,6 +113,57 @@ class Presensi extends CI_Controller {
         $this->session->set_flashdata('alert', ['title' => 'Success', 'message' => 'sukses melakukan absensi', 'icon' => 'success']);
 
         redirect(base_url().'presensi');
+    }
+
+    public function excel()
+    {
+        $data =  $this->model_presensi->getAbsensi();
+
+        $spreadsheet = new Spreadsheet;
+
+        $spreadsheet->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'No')
+                    ->setCellValue('B1', 'Kode Karyawan')
+                    ->setCellValue('C1', 'Nama Karyawan')
+                    ->setCellValue('D1', 'Jabatan')
+                    ->setCellValue('E1', 'Tanggal')
+                    ->setCellValue('F1', 'Jam Masuk')
+                    ->setCellValue('G1', 'Jam Keluar')
+                    ->setCellValue('H1', 'Status Kehadiran');
+        
+        $kolom = 2;
+        $nomor = 1;
+
+        // echo '<pre>';print_r($data);echo '</pre>';die();
+
+        foreach($data as $karyawan){
+            $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A' . $kolom, $nomor)
+            ->setCellValue('B' . $kolom, $karyawan->kode_id_karyawan)
+            ->setCellValue('C' . $kolom, $karyawan->nama)
+            ->setCellValue('D' . $kolom, $karyawan->jabatan)
+            ->setCellValue('E' . $kolom, $karyawan->tanggal)
+            ->setCellValue('F' . $kolom, $karyawan->jam_masuk)
+            ->setCellValue('G' . $kolom, $karyawan->jam_keluar)
+            ->setCellValue('H' . $kolom, $karyawan->status_kehadiran);
+
+            $kolom++;
+            $nomor++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        
+        $date = date('d-m-Y');
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Absensi"'.$date.'".xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+            
+        
+
+    //   echo '<pre>'; print_r($data); echo '</pre>';die;
     }
 
 }

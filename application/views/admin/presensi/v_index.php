@@ -53,6 +53,7 @@ if($this->input->get('bulan')){
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <a href="<?= base_url('presensi/add') ?>" class="btn btn-sm btn-primary"><i class="fa fa-plus mr-2"></i>Absen Manual</a>
+            <a href="<?= base_url('presensi/excel')?>" class="btn btn-sm btn-success"><i class="far fa-file-excel mr-2"></i>Rekap Absen Excel</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
