@@ -96,9 +96,6 @@ if($this->input->get('bulan')){
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
-                        echo '<pre>';print_r($karyawan);echo '</pre>';die(); 
-                        ?>
                     <?php foreach($karyawan as $data): 
                         if($data['jabatan'] == 'Admin'){continue;}
                     ?>
