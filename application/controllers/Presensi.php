@@ -82,7 +82,7 @@ class Presensi extends CI_Controller {
     public function add()
     {
         $data = [
-            'karyawan' => $this->model_presensi->getData('kode_id, nama')->result()
+            'karyawan' => $this->model_presensi->getData('kode_id, nama, jabatan')
         ];
         $this->load->view('admin/v_header');
         $this->load->view('admin/presensi/v_add', $data);

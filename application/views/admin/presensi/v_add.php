@@ -10,8 +10,11 @@
                     <label for="karyawan">Nama Karyawan</label>
                     <select class="form-control" name="kode_id_karyawan" id="karyawan">
                         <option selected disabled>--pilih karyawan--</option>
-                        <?php foreach($karyawan as $k): ?>
-                            <option value="<?= $k->kode_id ?>"><?= $k->nama ?></option>
+                        <?php foreach($karyawan as $k): 
+                            if($k['jabatan'] == 'Admin'){continue;}    
+                        ?>
+
+                            <option value="<?= $k['kode_id'] ?>"><?= $k['nama'] ?></option>
                         <?php endforeach ?>
                     </select>
                 </div>

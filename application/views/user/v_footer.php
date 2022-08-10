@@ -34,6 +34,24 @@
   <script src="<?= base_url() ?>assets/sbadmin/vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="<?= base_url() ?>assets/sbadmin/vendor/datatables/dataTables.bootstrap4.min.js"></script>
   <script src="<?= base_url() ?>assets/sbadmin/js/demo/datatables-demo.js"></script>
+  <script>
+    window.onload = function(){ jam() }
+    function jam(){
+        let e = document.getElementById('jam'),
+            d = new Date(), h, m, s;
+            h = d.getHours();
+            m = set(d.getMinutes());
+            s = set(d.getSeconds());
+       
+            e.innerHTML = h +':'+ m +':'+ s;
+       
+            setTimeout('jam()', 1000);
+    }
+    function set(e) {
+            e = e < 10 ? '0'+ e : e;
+            return e;
+        }
+  </script>
 </body>
 
 </html>

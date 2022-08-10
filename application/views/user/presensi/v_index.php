@@ -76,18 +76,18 @@ if($this->input->get('bulan')){
                     </div>
                     <button type="submit" class="btn btn-primary mx-sm-3">filter</button>
                 </form>
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table table-bordered table-sm table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th rowspan="2" style="text-align: center;">Nama Karyawan</th>
-                            <th rowspan="2">jabatan</th>
-                            <th colspan="<?= date('t') ?>" style="text-align: center;">Tanggal</th>
-                            <th rowspan="2">Total Kehadiran</th>
-                            <th rowspan="2">Status</th>
+                            <th rowspan="2" style="text-align: center;" data-orderable="false">Nama Karyawan</th>
+                            <th rowspan="2" data-orderable="false">jabatan</th>
+                            <th colspan="<?= date('t') ?>" style="text-align: center;" data-orderable="false">Tanggal</th>
+                            <th rowspan="2" data-orderable="false">Total Kehadiran</th>
+                            <th rowspan="2" data-orderable="false">Status</th>
                         </tr>
                         <tr>
                             <?php for ($i=1; $i <= date('t') ; $i++): ?>
-                            <th style="text-align:center;width:5px;"><?= $i ?></th>
+                            <th style="text-align:center;" data-orderable="false"><?= $i ?></th>
                             <?php endfor ?>
                         </tr>
                     </thead>
