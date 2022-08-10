@@ -65,4 +65,13 @@ class Model_presensi extends CI_Model{
         $this->db->insert($this->table, $data);
     }
 
+    function getAbsensi()
+    {
+        $sql = $this->db->query("SELECT kode_id_karyawan, nama, jabatan, tanggal, jam_masuk, jam_keluar, status_kehadiran FROM tb_presensi INNER JOIN tb_karyawan ON kode_id = kode_id_karyawan ORDER BY tanggal ASC");
+
+        $hasil = $sql->result();
+
+        return $hasil;
+    }
+
 }
