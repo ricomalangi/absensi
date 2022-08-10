@@ -112,7 +112,20 @@
         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
         </button>
+        <h5>
+            <span class="badge badge-primary"><?= date('D, d M') ?> | <span id="jam"></span></span>
+        </h5>
+         <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
 
+            <div class="topbar-divider d-none d-sm-block"></div>
 
+            <!-- Nav Item - User Information -->
+            <li class="nav-item d-none d-md-block dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-lg-inline text-gray-600 small"><?= $this->session->userdata('nama_karyawan') ?></span>
+                </a>
+            </li>
+        </ul>
     </nav>
 <!-- End of Topbar -->
