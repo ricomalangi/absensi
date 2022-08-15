@@ -11,7 +11,7 @@
                     <select class="form-control" name="kode_id_karyawan" id="karyawan">
                         <option selected disabled>--pilih karyawan--</option>
                         <?php foreach($karyawan as $k): 
-                            if($k['jabatan'] == 'Admin'){continue;}    
+                            if($k['nama_jabatan'] == 'admin'){continue;}    
                         ?>
 
                             <option value="<?= $k['kode_id'] ?>"><?= $k['nama'] ?></option>

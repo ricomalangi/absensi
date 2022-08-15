@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>Admin - Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= base_url() ?>assets/sbadmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -47,14 +47,27 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
         </li>
-
-      <!-- Divider -->
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+            PROFILE
+        </div>
+        <li class="nav-item">
+            <a class="nav-link" href="<?= base_url('profile') ?>">
+            <i class="fas fa-user fa-chart-area"></i>
+            <span>My Profile</span></a>
+        </li>
+        <!-- Divider -->
         <hr class="sidebar-divider">
 
-      <!-- Heading -->
+        <!-- Heading -->
         <div class="sidebar-heading">
             MASTER DATA
         </div>
+        <li class="nav-item">
+            <a class="nav-link" href="<?= base_url('jabatan') ?>">
+            <i class="fas fa-briefcase"></i>
+            <span>Jabatan</span></a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="<?= base_url('karyawan') ?>">
             <i class="fas fa-users fa-chart-area"></i>

@@ -31,16 +31,14 @@ class Absensi extends CI_Controller {
     
     public function actionUpdate()
     {
-        $jam_masuk_awal = $this->input->post('jam_masuk_awal');
-        $jam_masuk_akhir = $this->input->post('jam_masuk_akhir');
-        $jam_pulang_awal = $this->input->post('jam_pulang_awal');
-        $jam_pulang_akhir = $this->input->post('jam_pulang_akhir');
-
+        $jam_masuk = $this->input->post('jam_masuk');
+        $maksimal_kerja = $this->input->post('maksimal_kerja');
+        $jam_pulang = date_add(date_create($jam_masuk), date_interval_create_from_date_string("$maksimal_kerja hours"));
+        $jam_pulang = date_format($jam_pulang, "H:i:s");
         $data = [
-            'jam_masuk_awal' =>  $jam_masuk_awal,
-            'jam_masuk_akhir' =>  $jam_masuk_akhir,
-            'jam_pulang_awal' =>  $jam_pulang_awal,
-            'jam_pulang_akhir' =>  $jam_pulang_akhir,
+            'jam_masuk' =>  $jam_masuk,
+            'jam_pulang' =>  $jam_pulang,
+            'maksimal_kerja' => $maksimal_kerja
         ];
 
         $this->model_absensi->updateData($data);   

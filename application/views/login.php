@@ -34,7 +34,7 @@
                 <div class="row">
                 <div class="col-lg-6">
                     <div class="alert alert-primary text-center" role="alert">
-                        Absen masuk dimulai pukul  <?= date("H:i",strtotime($jam_absensi->jam_masuk_awal)) ?> - <?= date("H:i",strtotime($jam_absensi->jam_masuk_akhir)) ?>
+                        Absen masuk <?= date("H:i",strtotime($jam_absensi->jam_masuk)) ?>
                     </div>
                     <div id="sourceSelectPanel" style="display:none; margin-bottom:5px;" class="text-center">
                         <label for="sourceSelect" class="mt-3">Change video source:</label>

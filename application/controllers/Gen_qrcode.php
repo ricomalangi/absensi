@@ -13,6 +13,10 @@ class Gen_qrcode extends CI_Controller {
             $this->session->set_flashdata('alert','Anda Belum login, silahkan login terlebih dahulu !');
             redirect(base_url('login'));
         }
+        if($this->session->userdata('id_jabatan') != 1){
+            $this->session->set_flashdata('alert','Access Denied !');
+            redirect(base_url('user_dashboard'));
+        }
         $this->load->model('model_qrcode');
     }
 	public function index()
@@ -25,7 +29,7 @@ class Gen_qrcode extends CI_Controller {
 	}
     public function generate()
     {
-        $id_karyawan = ['id_karyawan' => $this->input->post('id')] ;
+        $id_karyawan = $this->input->post('id');
 
         $karyawan = $this->model_qrcode->getDataById($id_karyawan);
 
@@ -43,7 +47,7 @@ class Gen_qrcode extends CI_Controller {
             $qrcode_result->saveToFile(FCPATH . $upload_file);
             $data = [
                 'nama' => $result->nama,
-                'jabatan' => $result->jabatan,
+                'jabatan' => $result->nama_jabatan,
                 'kode_id' => $result->kode_id,
                 'qrcode' => $qrcode_result->getDataUri()
             ];
@@ -52,8 +56,6 @@ class Gen_qrcode extends CI_Controller {
             $data = ['not_found' => 'Data Tidak Ditemukan !!'];
             $this->load->view('admin/qrcode/v_result', $data);
         }
-        // $data = ['id' => $id_karyawan];
-     
     }
 
 }

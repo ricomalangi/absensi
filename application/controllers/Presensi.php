@@ -15,7 +15,7 @@ class Presensi extends CI_Controller {
             $this->session->set_flashdata('alert','Anda Belum login, silahkan login terlebih dahulu !');
             redirect(base_url('login'));
         }
-        if($this->session->userdata('jabatan') != 'Admin'){
+        if($this->session->userdata('id_jabatan') != 1){
             $this->session->set_flashdata('alert','Access Denied !');
             redirect(base_url('user_dashboard'));
         }
@@ -72,12 +72,12 @@ class Presensi extends CI_Controller {
                 $bulan = 'invalid month';
         }
         $data = [
-            'karyawan' => $this->model_presensi->getData('kode_id, nama, jabatan', $get_bulan, $get_tahun),
+            'karyawan' => $this->model_presensi->getData('tk.kode_id, tk.nama, tj.nama_jabatan', $get_bulan, $get_tahun),
             'bulan_sekarang' => $bulan,
             'tahun_sekarang' => $get_tahun
         ];
 
-        // echo '<pre>';print_r($data);echo '</pre>';die();
+      
         
         $this->load->view('admin/v_header');
 		$this->load->view('admin/presensi/v_index', $data);
@@ -87,7 +87,7 @@ class Presensi extends CI_Controller {
     public function add()
     {
         $data = [
-            'karyawan' => $this->model_presensi->getData('kode_id, nama, jabatan')
+            'karyawan' => $this->model_presensi->getData('tk.kode_id, tk.nama, tj.nama_jabatan')
         ];
         $this->load->view('admin/v_header');
         $this->load->view('admin/presensi/v_add', $data);
@@ -100,12 +100,36 @@ class Presensi extends CI_Controller {
         $tanggal = $this->input->post('tanggal');
         $jam_masuk = $this->input->post('jam_masuk');
         $jam_keluar = $this->input->post('jam_keluar');
+
+        $jam_kantor = $this->db->select('jam_masuk, jam_pulang, maksimal_kerja')->get('tb_absensi')->row();
+        $diff = date_diff(date_create($jam_kantor->jam_masuk), date_create($jam_masuk));
+
+        if($jam_masuk > $jam_kantor->jam_masuk){
+            $selisih_waktu = "terlambat $diff->h jam $diff->i menit";
+        } else {
+            $selisih_waktu = "tepat waktu";
+        }
+
+        $lama_karyawan_bekerja = date_diff(date_create($jam_masuk), date_create($jam_keluar));
+        if($lama_karyawan_bekerja->h == $jam_kantor->maksimal_kerja){
+            $status_kerja = "kerja $jam_kantor->maksimal_kerja jam ";
+        } else if($lama_karyawan_bekerja->h > $jam_kantor->maksimal_kerja){
+            $lembur = $lama_karyawan_bekerja->h - $jam_kantor->maksimal_kerja;
+            $status_kerja = "lembur $lembur jam";
+        } else {
+            $status_kerja = "kerja < $jam_kantor->maksimal_kerja jam";
+        }
+
+
         $data = [
             'kode_id_karyawan' => $kode_karyawan,
             'tanggal' => $tanggal,
+            'jam_masuk_kantor' => $jam_kantor->jam_masuk,
+            'jam_pulang_kantor' => $jam_kantor->jam_pulang,
             'jam_masuk' => $jam_masuk,
             'jam_keluar' => $jam_keluar,
-            'status_kehadiran' => 'absen manual',
+            'status_kerja' => $status_kerja,
+            'status_kehadiran' => $selisih_waktu,
             'status_absensi' => 2
         ];
         $this->model_presensi->insertData($data);
@@ -114,6 +138,15 @@ class Presensi extends CI_Controller {
 
         redirect(base_url().'presensi');
     }
+
+    public function detail($kode_karyawan)
+    {
+        $data['presensi'] = $this->model_presensi->getAbsensiWhere($kode_karyawan)->result();
+        $this->load->view('admin/v_header');
+        $this->load->view('admin/presensi/v_detail', $data);
+        $this->load->view('admin/v_footer');
+    }
+
 
     public function excel()
     {
@@ -127,9 +160,12 @@ class Presensi extends CI_Controller {
                     ->setCellValue('C1', 'Nama Karyawan')
                     ->setCellValue('D1', 'Jabatan')
                     ->setCellValue('E1', 'Tanggal')
-                    ->setCellValue('F1', 'Jam Masuk')
-                    ->setCellValue('G1', 'Jam Keluar')
-                    ->setCellValue('H1', 'Status Kehadiran');
+                    ->setCellValue('F1', 'Jam Masuk Kantor')
+                    ->setCellValue('G1', 'Jam Pulang Kantor')
+                    ->setCellValue('H1', 'Jam Masuk')
+                    ->setCellValue('I1', 'Jam Keluar')
+                    ->setCellValue('J1', 'Status Kehadiran')
+                    ->setCellValue('K1', 'Status Kerja');
         
         $kolom = 2;
         $nomor = 1;
@@ -141,12 +177,14 @@ class Presensi extends CI_Controller {
             ->setCellValue('A' . $kolom, $nomor)
             ->setCellValue('B' . $kolom, $karyawan->kode_id_karyawan)
             ->setCellValue('C' . $kolom, $karyawan->nama)
-            ->setCellValue('D' . $kolom, $karyawan->jabatan)
+            ->setCellValue('D' . $kolom, $karyawan->nama_jabatan)
             ->setCellValue('E' . $kolom, $karyawan->tanggal)
-            ->setCellValue('F' . $kolom, $karyawan->jam_masuk)
-            ->setCellValue('G' . $kolom, $karyawan->jam_keluar)
-            ->setCellValue('H' . $kolom, $karyawan->status_kehadiran);
-
+            ->setCellValue('F' . $kolom, $karyawan->jam_masuk_kantor)
+            ->setCellValue('G' . $kolom, $karyawan->jam_pulang_kantor)
+            ->setCellValue('H' . $kolom, $karyawan->jam_masuk)
+            ->setCellValue('I' . $kolom, $karyawan->jam_keluar)
+            ->setCellValue('J' . $kolom, $karyawan->status_kehadiran)
+            ->setCellValue('K' . $kolom, $karyawan->status_kerja);
             $kolom++;
             $nomor++;
         }

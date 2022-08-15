@@ -83,7 +83,7 @@ if($this->input->get('bulan')){
                             <th rowspan="2" data-orderable="false">jabatan</th>
                             <th colspan="<?= date('t') ?>" style="text-align: center;" data-orderable="false">Tanggal</th>
                             <th rowspan="2" data-orderable="false">Total Kehadiran</th>
-                            <th rowspan="2" data-orderable="false">Status</th>
+                            <th rowspan="2" data-orderable="false">Detail</th>
                         </tr>
                         <tr>
                             <?php for ($i=1; $i <= date('t') ; $i++): ?>
@@ -95,18 +95,28 @@ if($this->input->get('bulan')){
                     <?php foreach($karyawan as $data): ?>
                         <tr>
                             <td><?= $data['nama'] ?></td>
-                            <td><?= $data['jabatan'] ?></td>
+                            <td><?= $data['nama_jabatan'] ?></td>
                             <?php 
                                 for($j = 1; $j <= date('t'); $j++){
-                                    if(in_array($j, $data['tgl_hadir'])){
-                                        echo "<td><i class='fas fa-check' style='color:green'></i></td>";
-                                    }else{
+                                    if(in_array($j,$data['tgl_hadir'])){
+                                        $key = array_search($j, $data['tgl_hadir']);
+                                        $kehadiran = $data['status_kehadiran'][$key];
+                                        if(strstr($kehadiran, "terlambat")){
+                                            $badge = 'danger';
+                                        } else {
+                                            $badge = 'success';
+                                        }
+    
+                                        echo "<td style='text-align:center'><i class='fas fa-check' style='color:green'></i>
+                                        <span class='badge badge-pill badge-$badge'>$kehadiran</span>
+                                        </td>";
+                                    } else {
                                         echo "<td>-</td>";
                                     }
                                 }
                             ?>
                             <td><?= count($data['tgl_hadir']) ?></td>
-                            <td>Hadir</td>
+                            <td><a href="<?= base_url() ?>user_presensi/detail" class="btn btn-sm btn-success">detail</td>
                         </tr>
                     <?php endforeach ?>
                     </tbody>

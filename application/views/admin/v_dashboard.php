@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <p>Nama karyawan: <?= $this->session->userdata('nama_karyawan') ?></p>
                     <p>Kode karyawan: <?= $this->session->userdata('kode_karyawan') ?></p>
-                    <p>Jabatan: <?= $this->session->userdata('jabatan') ?></p>
+                    <p>Jabatan: <?= $jabatan ?></p>
                 </div>
               </div>
         </div>

@@ -19,9 +19,9 @@
                     <label for="jabatan">Jabatan</label>
                     <select name="jabatan" id="jabatan" class="form-control">
                         <option selected disabled>--pilih jabatan--</option>
-                        <option value="Staff" <?= ($karyawan->jabatan == 'Staff' ? 'selected' : '') ?> >Staff</option>
-                        <option value="Manager" <?= ($karyawan->jabatan == 'Manager' ? 'selected' : '') ?>>Manager</option>
-                        <option value="Admin" <?= ($karyawan->jabatan == 'Admin' ? 'selected' : '') ?>>Admin</option>
+                        <?php foreach($jabatan as $j): ?>
+                            <option value="<?= $j->id_jabatan ?>" <?= ($karyawan->id_jabatan == $j->id_jabatan ? 'selected' : '') ?> ><?= $j->nama_jabatan ?></option>
+                        <?php endforeach ?>
                     </select>
                 </div>
                 <a href="<?= base_url('karyawan') ?>" class="btn btn-sm btn-secondary"><i class="fa fa-angle-left"></i> kembali</a>

@@ -5,7 +5,7 @@
             My profile
         </div>
         <div class="card-body">
-            <form action="<?= base_url('user_profile/update') ?>" method="POST">
+            <form action="<?= base_url('profile/update') ?>" method="POST">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">

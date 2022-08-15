@@ -64,17 +64,21 @@ class User_presensi extends CI_Controller {
                 $bulan = 'invalid month';
         }
         $data = [
-            'karyawan' => $this->model_presensi->getDataWhere('kode_id, nama, jabatan', $this->session->userdata('kode_karyawan') ,$get_bulan, $get_tahun),
+            'karyawan' => $this->model_presensi->getDataWhere('tk.kode_id, tk.nama, tj.nama_jabatan', $this->session->userdata('kode_karyawan') ,$get_bulan, $get_tahun),
             'bulan_sekarang' => $bulan,
             'tahun_sekarang' => $get_tahun
         ];
-
-        // echo '<pre>';print_r($data);echo '</pre>';die();
         
         $this->load->view('user/v_header');
 		$this->load->view('user/presensi/v_index', $data);
         $this->load->view('user/v_footer');
 	}
 
-
+    public function detail()
+    {
+        $data['presensi'] = $this->model_presensi->getAbsensiWhere($this->session->userdata('kode_karyawan'))->result();
+        $this->load->view('user/v_header');
+        $this->load->view('user/presensi/v_detail', $data);
+        $this->load->view('user/v_footer');
+    }
 }

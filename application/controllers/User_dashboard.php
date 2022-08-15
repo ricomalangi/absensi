@@ -18,7 +18,7 @@ class User_dashboard extends CI_Controller {
 
 	public function index()
 	{
-        $id_karyawan = ['id_karyawan' => $this->session->userdata('id_karyawan')] ;
+        $id_karyawan =  $this->session->userdata('id_karyawan');
 
         $karyawan = $this->model_qrcode->getDataById($id_karyawan);
 
@@ -45,10 +45,4 @@ class User_dashboard extends CI_Controller {
         $this->load->view('user/v_footer');
 	}
 
-    public function generate()
-    {
-       
-        // $data = ['id' => $id_karyawan];
-     
-    }
 }

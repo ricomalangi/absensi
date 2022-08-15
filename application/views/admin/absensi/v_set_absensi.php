@@ -6,20 +6,32 @@
         </div>
         <div class="card-body">
             <form action="<?= base_url('absensi/actionUpdate') ?>" method="POST">
-                <div class="form-group">
-                    <label for="jam_masuk">Jam masuk</label>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <input type="time" class="form-control" name="jam_masuk_awal" id="jam_masuk" value="<?= $absensi->jam_masuk_awal ?>">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="jam_masuk">Jam masuk</label>
+                            <input type="time" class="form-control" name="jam_masuk" id="jam_masuk" value="<?= $absensi->jam_masuk ?>">
                         </div>
-                        <div class="col-md-2 text-center">
-                            <p>sampai</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="jam_pulang">Jam Pulang</label>
+                            <input type="time" class="form-control" id="jam_pulang" value="<?= $absensi->jam_pulang ?>" readonly>
                         </div>
-                        <div class="col-md-5">
-                            <input type="time" class="form-control" name="jam_masuk_akhir" id="jam_masuk" value="<?= $absensi->jam_masuk_akhir ?>">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="jam_pulang">Lama bekerja</label>
+                            <div class="input-group mb-2 mr-sm-2">
+                                <input type="number" name="maksimal_kerja" class="form-control" id="jam_pulang" value="<?= $absensi->maksimal_kerja ?>">
+                                <div class="input-group-prepend">
+                                <div class="input-group-text">Jam</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+             
                 <button type="submit" class="btn btn-sm btn-primary" name="add"><i class="fa fa-save"></i> simpan</button>
             </form>
         </div>
@@ -33,3 +45,7 @@
     Swal.fire({title: '<?= $result['title'] ?>',text: '<?= $result['message'] ?>',icon: '<?= $result['icon'] ?>',confirmButtonText: 'OK'})
 </script>
 <?php endif ?>
+
+<script>
+
+</script>

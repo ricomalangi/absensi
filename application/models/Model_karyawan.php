@@ -3,15 +3,17 @@
 class Model_karyawan extends CI_Model{
     private $table = 'tb_karyawan';
 
-    function getData($column = "*"){
-        $this->db->select($column);
-
-        return $this->db->get($this->table);
+    function getData(){
+        $data = $this->db->query("SELECT tk.id_karyawan, tk.kode_id, tk.nama, tj.nama_jabatan FROM tb_karyawan tk INNER JOIN tb_jabatan tj ON tk.id_jabatan = tj.id_jabatan");
+      
+        return $data;
     }
 
     function getDataWhere($kode_id){
-        $this->db->where('kode_id', $kode_id);
-        return $this->db->get($this->table);
+        $query_data =  $this->db->query("SELECT tk.kode_id, tk.nama, tj.nama_jabatan FROM tb_karyawan tk INNER JOIN tb_jabatan tj ON tk.id_jabatan = tj.id_jabatan WHERE tk.kode_id = '$kode_id'");  
+
+
+        return $query_data;
     }
 
     function insertData($data){

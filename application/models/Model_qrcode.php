@@ -5,7 +5,7 @@ class Model_qrcode extends CI_Model{
 
     function getData($column = "*"){
         $this->db->select($column);
-        $this->db->where('jabatan !=', 'Admin');
+        $this->db->where('id_jabatan !=', 1);
         return $this->db->get($this->table);
     }
 
@@ -15,7 +15,8 @@ class Model_qrcode extends CI_Model{
 
     function getDataByID($id)
     {
-        return $this->db->get_where($this->table, $id);
+        $data = $this->db->query("SELECT tk.nama, tk.kode_id, tj.nama_jabatan FROM tb_karyawan tk INNER JOIN tb_jabatan tj ON tk.id_jabatan = tj.id_jabatan WHERE tk.id_karyawan = $id");
+        return $data;
     }
 
     function updateData($id, $data)

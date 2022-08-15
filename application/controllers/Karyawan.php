@@ -9,42 +9,43 @@ class Karyawan extends CI_Controller {
             $this->session->set_flashdata('alert','Anda Belum login, silahkan login terlebih dahulu !');
             redirect(base_url('login'));
         }
-        if($this->session->userdata('jabatan') != 'Admin'){
+        if($this->session->userdata('id_jabatan') != 1){
             $this->session->set_flashdata('alert','Access Denied !');
             redirect(base_url('user_dashboard'));
         }
         $this->load->model('model_karyawan');
+        $this->load->model('model_jabatan');
     }
 
 	public function index()
 	{
         $data['karyawan'] = $this->model_karyawan->getData()->result();
         
-
         $this->load->view('admin/v_header');
 		$this->load->view('admin/karyawan/v_index', $data);
         $this->load->view('admin/v_footer');
 	}
     public function add()
     { 
+        $data['jabatan'] = $this->model_jabatan->getData()->result();
         $this->load->view('admin/v_header');
-		$this->load->view('admin/karyawan/v_add');
+		$this->load->view('admin/karyawan/v_add',$data);
         $this->load->view('admin/v_footer');
     }
     public function actionAdd()
     {
         $nama = $this->input->post('nama');
-        $jabatan = $this->input->post('jabatan');
-        $kode_anggota = substr($jabatan, 0, 1);
+        $jabatan = explode(",",$this->input->post('jabatan'));
+        $kode_anggota = substr($jabatan[1], 0, 1);
+    
         $maxId = $this->model_karyawan->getMax();
         $kode_id = $kode_anggota . date('ym') . $maxId->kode;
         $data = [
             'nama' => $nama,
-            'jabatan' => $jabatan,
+            'id_jabatan' => $jabatan[0],
             'kode_id' => $kode_id,
             'password' => password_hash('12345678', PASSWORD_DEFAULT)
         ];
-
         $this->model_karyawan->insertData($data);   
 
         $this->session->set_flashdata('alert', ['title' => 'Success', 'message' => 'Berhasil Menambahkan Karyawan', 'icon' => 'success']);
@@ -55,6 +56,7 @@ class Karyawan extends CI_Controller {
     {
         $id_karyawan = ['id_karyawan' => $id];
         $data['karyawan'] = $this->model_karyawan->editData($id_karyawan)->row();
+        $data['jabatan'] = $this->model_jabatan->getData()->result();
         $this->load->view('admin/v_header');
 		$this->load->view('admin/karyawan/v_edit', $data);
         $this->load->view('admin/v_footer');
@@ -65,7 +67,7 @@ class Karyawan extends CI_Controller {
         $id_karyawan = ['id_karyawan' => $id];
         $data = [
             'nama' => $this->input->post('nama'),
-            'jabatan' => $this->input->post('jabatan')
+            'id_jabatan' => $this->input->post('jabatan')
         ];
 
         if($this->input->post('password')){
